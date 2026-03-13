@@ -14,7 +14,7 @@ Built this after spending a lot of time watching analysts copy-paste between PDF
 - Runs a ReAct-style agent (tool-calling loop) that retrieves context before answering
 - Shows source attribution for every answer so you can verify what it pulled
 
-The agent is intentionally designed to retrieve before it responds — it won't hallucinate an answer when the context isn't there. It'll just tell you it doesn't have enough information.
+The agent is intentionally designed to retrieve before it responds, it won't hallucinate an answer when the context isn't there. It'll just tell you it doesn't have enough information.
 
 ---
 
@@ -59,7 +59,7 @@ PDF / TXT ──► DocumentProcessor ──► text cleaning ──► chunking
 
 **1. Clone the repo**
 ```bash
-git clone https://github.com/yourusername/finsight.git
+git clone https://github.com/jhbergallo/finsight.git
 cd finsight
 ```
 
@@ -93,7 +93,7 @@ Then open `http://localhost:8501` in your browser.
 
 1. Paste your OpenAI API key in the sidebar (it's never stored anywhere)
 2. Upload one or more financial documents (PDF or TXT)
-3. Hit **Ingest Documents** — this chunks and embeds everything
+3. Hit **Ingest Documents**: this chunks and embeds everything
 4. Start asking questions
 
 **Some things worth trying:**
@@ -133,27 +133,6 @@ You can tweak the following in `.env` or through the UI:
 | `TOP_K_RETRIEVAL` | `6` | Chunks retrieved per query |
 
 Chunk size and overlap are adjustable in the sidebar.
-
----
-
-## Known limitations
-
-- The vector store is in-memory, so documents are gone when you close the session. Persistence with ChromaDB's disk backend is straightforward to add if needed.
-- Very large PDFs (100+ pages) may be slow to ingest depending on your machine.
-- Table-heavy PDFs sometimes don't parse well — the text extracted from complex tables can be messy. Works best with text-heavy reports.
-- No streaming yet. Answers appear all at once after the agent finishes reasoning.
-
----
-
-## Possible extensions
-
-A few things that would make this more production-ready:
-
-- **Persistent storage** — swap the in-memory ChromaDB client for a persistent one or a managed vector DB (Pinecone, Qdrant, Weaviate)
-- **Hybrid search** — combine dense retrieval with BM25 for better recall on financial terminology
-- **Structured extraction** — add a pipeline that extracts key metrics (revenue, EBITDA, margins) into structured form and stores them separately
-- **Multi-tenant support** — namespace collections per user or document set
-- **Evaluation** — add a RAGAS-based eval pipeline to track answer faithfulness and relevance over time
 
 ---
 
